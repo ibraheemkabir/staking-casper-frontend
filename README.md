@@ -1,1 +1,1 @@
-# staking-casper-frontend
+# Ferrum Network Staking Casper Network Frontend

@@ -7,9 +7,13 @@ const initialState = {
     shouldStake: false,
     isStaked: false,
     stakeTransaction: undefined,
-    signedAddresses: {},
+    signedAddresses: [],
     stakeWithdrawSucess: 0,
     config: undefined,
+    tokenInfo: {
+      symbol: 'TOKEN_SYMBOL',
+      name: 'TOKEN_NAME',
+    }
   };
   
   export const casperSlice = createSlice({
@@ -35,6 +39,10 @@ const initialState = {
       setShouldStake: (state) => {
         state.shouldStake = true;
       },
+      signed: (state, action) => {
+        console.log(action)
+        state.signedAddresses = action.payload
+      },
       staked: (state, action) => {
         state.selectedAccount = action.payload.selectedAccount;
         state.isStaked = true;
@@ -45,6 +53,7 @@ const initialState = {
       },
       configLoaded: (state, action) => {
         state.config = action.payload.config;
+        state.tokenInfo = action.payload.tokenInfo;
       },
     },
   });

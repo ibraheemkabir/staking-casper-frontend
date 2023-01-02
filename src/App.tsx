@@ -13,14 +13,7 @@ function App() {
       <Toaster position="top-right" />
       <FLayout themeBuilder={false} FsiderLayoutState={true}>
         <FContainer width={1200} className="f-pl-1 f-pr-1">
-          <Header />
-          <FMain>
-            {/* <FResponseBar
-              variant="error"
-              title="You are connected to POLYGON. Please connect to ETHEREUM for the current staking"
-            /> */}
-            <BaseRoutes />
-          </FMain>
+          <BaseRoutes />
         </FContainer>
       </FLayout>
     </div>

@@ -1,6 +1,6 @@
-import { algorandSlice } from "./algorandSlice";
+import { casperSlice } from "./casperSlice";
 import moment from "moment";
-const { actions } = algorandSlice;
+const { actions } = casperSlice;
 
 export const connectWallet = (connectedAccounts) => async (dispatch) => {
   dispatch(
@@ -19,7 +19,7 @@ export const staked = (selectedAddress) => async (dispatch) => {
 };
 
 export const signed = (signedAddress) => async (dispatch) => {
-  dispatch(actions.singed(signedAddress));
+  dispatch(actions.signed(signedAddress));
 };
 
 export const selectAccount = (selectedAccount) => async (dispatch) => {
@@ -35,37 +35,28 @@ export const stakeWithdrawSucess = () => async (dispatch) => {
 };
 
 export const configLoaded = (config) => async (dispatch) => {
-  console.log(config);
-  // var stillUtc = moment
-  //   .utc(moment.utc(values.stakingStarts).format("YYYY-MM-DD HH:mm:ss Z"))
-  //   .toDate();
-  // console.log(moment(stillUtc).local().format("YYYY-MM-DD HH:mm:ss"));
-  const stakingStartUtc = moment
-    .utc(moment.utc(config.stakingStarts).format("YYYY-MM-DD HH:mm:ss Z"))
-    .toDate();
-  // console.log(moment(stakingStartUtc).local().format("YYYY-MM-DD HH:mm:ss")); // UTC to Local
-  const stakingEndsUtc = moment
-    .utc(moment.utc(config.stakingEnds).format("YYYY-MM-DD HH:mm:ss Z"))
-    .toDate();
-  // console.log(moment(stakingEndsUtc).local().format("YYYY-MM-DD HH:mm:ss")); // UTC to Local
-  const withdrawStartUtc = moment
-    .utc(moment.utc(config.withdrawStarts).format("YYYY-MM-DD HH:mm:ss Z"))
-    .toDate();
-  // console.log(moment(withdrawStartUtc).local().format("YYYY-MM-DD HH:mm:ss")); // UTC to Local
-  const withdrawEndsUtc = moment
-    .utc(moment.utc(config.withdrawEnds).format("YYYY-MM-DD HH:mm:ss Z"))
-    .toDate();
-  // console.log(moment(withdrawEndsUtc).local().format("YYYY-MM-DD HH:mm:ss")); // UTC to Local
-  const data = {
-    ...config,
-    stakingStarts: moment(stakingStartUtc)
-      .local()
-      .format("YYYY-MM-DD HH:mm:ss"),
-    stakingEnds: moment(stakingEndsUtc).local().format("YYYY-MM-DD HH:mm:ss"),
-    withdrawStart: moment(withdrawStartUtc)
-      .local()
-      .format("YYYY-MM-DD HH:mm:ss"),
-    withdrawEnds: moment(withdrawEndsUtc).local().format("YYYY-MM-DD HH:mm:ss"),
+  console.log(config.config, 'configgggg');
+  let data = {}
+  if (config.config.length) {
+    config.config.forEach(
+      e => {
+        console.log(e[1])
+        data[e[0]] = e[1].parsed
+      }
+    )
+  }
+
+  data = {
+    ...data,
+    stakingTotal: data?.staking_total,
+    stakingEnds: moment.unix(data.staking_ends).format("YYYY-MM-DD HH:mm:ss"),
+    stakingStarts: moment.unix(data.staking_starts).format("YYYY-MM-DD HH:mm:ss"),
+    withdrawStarts: moment.unix(data.withdraw_starts).format("YYYY-MM-DD HH:mm:ss"),
+    withdrawEnds: moment.unix(data.withdraw_ends).format("YYYY-MM-DD HH:mm:ss"),
+    stakingEnds: moment.unix(data.staking_ends).format("YYYY-MM-DD HH:mm:ss"),
+    stakingStarts: moment.unix(data.staking_starts).format("YYYY-MM-DD HH:mm:ss")
   };
-  dispatch(actions.configLoaded({ config: data }));
+
+  console.log(data, config);
+  dispatch(actions.configLoaded({ config: data, tokenInfo: config.tokenInfo }));
 };

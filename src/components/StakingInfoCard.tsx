@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { FCard, FGrid, FGridItem, FItem, FTypo } from "ferrum-design-system";
 import { useSelector } from "react-redux";
-
+import { getStakingInfo } from "../utils/DateUtil";
 
 export const StakingInfoCard = () => {
+  const { isWalletConnected, config, tokenInfo } =
+  useSelector((state: any) => state.casper.connect);
 
-  const isWalletConnected = false;
   // const [stakingCap, setStakingCap] = useState<any>(undefined);
   const [stakeSoFar, setStakeSoFar] = useState<any>(undefined);
   const [youStakedBalance, setYourStakedBalance] = useState<any>(undefined);
 
+  const stakingInfo = getStakingInfo(
+    config?.stakingEnds,
+    config?.stakingStarts,
+    config?.withdrawStarts,
+    config?.withdrawEnds
+  );
+
+  console.log(config, stakingInfo, tokenInfo, 'configconfigconfig')
   // console.log(stakingCap, stakeSoFar, youStakedBalance);
 
   return (
@@ -21,7 +30,7 @@ export const StakingInfoCard = () => {
               MATURITY REWARD
             </FTypo>
             <FTypo size={22} weight={600} color="#dab46e">
-              10 APY
+              0 APY
             </FTypo>
           </FItem>
         </FGridItem>
@@ -41,7 +50,7 @@ export const StakingInfoCard = () => {
               STAKING CAP
             </FTypo>
             <FTypo size={22} weight={600} color="#dab46e">
-              0 AFRM
+              {config?.stakingTotal || 0}
             </FTypo>
           </FItem>
         </FGridItem>
@@ -51,7 +60,7 @@ export const StakingInfoCard = () => {
               STAKED SO FAR
             </FTypo>
             <FTypo size={22} weight={600} color="#dab46e">
-              {stakeSoFar ? stakeSoFar : 0} AFRM
+              {stakeSoFar ? stakeSoFar : 0} {tokenInfo.tokenSymbol}
             </FTypo>
           </FItem>
         </FGridItem>
@@ -63,23 +72,25 @@ export const StakingInfoCard = () => {
                   YOUR STAKED BALANCE
                 </FTypo>
                 <FTypo size={22} weight={600} color="#dab46e">
-                  {youStakedBalance ? youStakedBalance : 0} AFRM
+                  {youStakedBalance ? youStakedBalance : 0} {tokenInfo.tokenSymbol}
                 </FTypo>
               </FItem>
             </FGridItem>
           </>
         )}
-        <FGridItem>
-        <FItem
-            bgColor="#1F2128"
-            className={"f-mt--5 f-p--8 w-100"}
-            align="center"
-        >
-            <FTypo weight={500} size={18}>
-            STAKING CONTRIBUTION CLOSE IN 0
-            </FTypo>
-        </FItem>
-        </FGridItem>
+       {stakingInfo.isStakingOpen && (
+          <FGridItem>
+            <FItem
+              bgColor="#1F2128"
+              className={"f-mt--5 f-p--8 w-100"}
+              align="center"
+            >
+              <FTypo weight={500} size={18}>
+                STAKING CONTRIBUTION CLOSE IN {stakingInfo.stakingClosesIn}
+              </FTypo>
+            </FItem>
+          </FGridItem>
+        )}
       </FGrid>
     </FCard>
   );

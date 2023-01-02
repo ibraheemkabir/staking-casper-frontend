@@ -7,10 +7,17 @@ import {
   FItem,
   FTypo,
 } from "ferrum-design-system";
+import { getMaturityInfo } from "../utils/DateUtil";
 import { useSelector } from "react-redux";
 
 export const CardMaturity = () => { 
   // console.log(maturityInfo);
+  const { config } = useSelector((state: any) => state.casper.connect);
+  
+  const maturityInfo: any = getMaturityInfo(
+    config?.withdrawStarts,
+    config?.withdrawEnds
+  );
 
   return (
     <FCard className={"card-maturity f-mb-2"}>
@@ -21,7 +28,7 @@ export const CardMaturity = () => {
               MATURITY AT
             </FTypo>
             <FTypo size={22} weight={600} color="#dab46e">
-              0
+              {maturityInfo.maturityAt}
             </FTypo>
           </FItem>
         </FGridItem>
@@ -51,7 +58,7 @@ export const CardMaturity = () => {
                     color="#dab46e"
                     align={"center"}
                   >
-                    1
+                    {maturityInfo.months}
                   </FTypo>{" "}
                 </FItem>
                 <FTypo align={"center"} className="f-mt--5">
@@ -74,7 +81,7 @@ export const CardMaturity = () => {
                     color="#dab46e"
                     align={"center"}
                   >
-                    2
+                    {maturityInfo.days}
                   </FTypo>{" "}
                 </FItem>
                 <FTypo align={"center"} className="f-mt--5">
@@ -97,7 +104,7 @@ export const CardMaturity = () => {
                     color="#dab46e"
                     align={"center"}
                   >
-                    3
+                    {maturityInfo.minutes || 0}
                   </FTypo>{" "}
                 </FItem>
                 <FTypo align={"center"} className="f-mt--5">
@@ -114,7 +121,7 @@ export const CardMaturity = () => {
               EARLY WITHDRAW OPEN
             </FTypo>
             <FTypo size={22} weight={600} color="#dab46e">
-              
+              {maturityInfo.earlyWithdrawDate}
             </FTypo>
           </FItem>
         </FGridItem>

@@ -22,15 +22,14 @@ const WidthCardSubmit = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [amount, setAmount] = useState();
-  const { selectedAccount, isWalletConnected, signedAddresses, config } = useSelector((state: any) => state.algorand);
+  const { connect: { selectedAccount, isWalletConnected, signedAddresses, config } } = useSelector((state: any) => state.casper);
 
   useEffect(() => {
     if (
       !isWalletConnected ||
-      selectedAccount === undefined ||
-      !isAddressSigned()
+      selectedAccount === undefined
     ) {
-      history.push(`/${config._id}`);
+      history.push(`/${stakingId}`);
     }
     // eslint-disable-next-line
   }, [isWalletConnected, selectedAccount, signedAddresses]);
@@ -53,7 +52,7 @@ const WidthCardSubmit = () => {
     ) {
       try {
         if (amount && Number(amount) > 0) {
-            history.push(`/${config._id}`);
+          history.push(`/${stakingId}`);
           toast.success(`${amount} tokens are unstaked successfully`);
         } else {
           toast.error("Amount must be greater than 0");
@@ -61,10 +60,10 @@ const WidthCardSubmit = () => {
       } catch (e) {
         console.log("ERROR : ", e);
         toast.error("An error occured please see console for details");
-        history.push(`/${config._id}`);
+        history.push(`/${stakingId}`);
       }
     } else {
-        history.push(`/${config._id}`);
+        history.push(`/${stakingId}`);
     }
   };
 
@@ -124,7 +123,7 @@ const WidthCardSubmit = () => {
           show={true}
         ></FResponseBar> */}
         <FButton
-          title={''}
+          title={'Withdraw'}
           className="w-100 f-mt-2"
           onClick={performWithdraw}
         />

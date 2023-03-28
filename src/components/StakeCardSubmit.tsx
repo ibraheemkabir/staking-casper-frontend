@@ -76,12 +76,12 @@ const StakeCardSubmit = () => {
           });
 
           const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
-            decodeBase16(stakingId),
+            decodeBase16('bece653339b33f9b7d6ada25f5ef38ed27ac8aeb9d21a8246233b7fdf3e9c559'),
             'stake',
             args
           );
 
-          const payment = DeployUtil.standardPayment(10000000000000);
+          const payment = DeployUtil.standardPayment(50000000000);
 
           const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 
@@ -175,7 +175,7 @@ const StakeCardSubmit = () => {
         ></FResponseBar> */}
         <FButton title={" Submit Stake"} className="w-100 f-mt-2" onClick={performStake} />
       </FCard>
-      <ConfirmationDialog onHide={() =>setShowConfirmation(false)} transaction={processMsg} message={'Transaction successfully sent to network.'} show={showConfirmation} />
+      <ConfirmationDialog onHide={() =>setShowConfirmation(false)} transaction={processMsg} message={'Transaction sent to network and is processing.'} show={showConfirmation} />
       <TxProcessingDialog onHide={() =>setLoading(false)} message={ processMsg || "Transaction Processing...."} show={loading}/>
     </React.Fragment>
   );

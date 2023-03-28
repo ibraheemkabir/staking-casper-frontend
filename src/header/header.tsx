@@ -97,6 +97,7 @@ const Header = () => {
         if (infoArguments) {
           console.log(infoArguments, 'infoArguments', infoArguments[1].parsed)
           const token = infoArguments[1].parsed.split('-')[1]
+
           console.log(token, latestBlock?.block?.header?.state_root_hash, 'latestBlock?.block?.header?.state_root_hash,latestBlock?.block?.header?.state_root_hash,');
 
           const tokenName = await casperService.getBlockState(
@@ -192,4 +193,5 @@ const Header = () => {
     </div>
   );
 };
+
 export default Header;

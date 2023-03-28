@@ -8,11 +8,12 @@ import { CardMaturity } from "../../components/MaturityCard";
 import StakeCardSubmit from "../../components/StakeCardSubmit";
 import WidthCardSubmit from "../../components/WithdrawCardSubmit";
 import StakingCard from "../../components/StakingCard";
+import CasperSwap from "../../components/CasperSwap";
 
 export const LandingPage = () => {
     return (
         <div>
-            <FGrid spacing={13}>            
+            <FGrid spacing={13}>
                 <>
                     <FGridItem size={[6, 6, 12]} dir="column">
                     <Switch>

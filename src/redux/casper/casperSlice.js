@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isWalletConnected: false,
     connectedAccounts: [],
+    withdrawalItems: [],
     selectedAccount: undefined,
     shouldStake: false,
     isStaked: false,
@@ -26,6 +27,10 @@ const initialState = {
         state.selectedAccount = action.payload.connectedAccounts?.length
           ? action.payload.connectedAccounts[0]
           : undefined;
+      },
+      fetchWithdrawals: (state, action) => {
+        console.log(action, 'actionaction')
+        state.withdrawalItems = action.payload.withdrawalItems;
       },
       resetWallet: (state, action) => {
         state.isWalletConnected = false;

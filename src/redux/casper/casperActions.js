@@ -14,6 +14,12 @@ export const resetWallet = (connectedAccounts) => async (dispatch) => {
   dispatch(actions.resetWallet());
 };
 
+
+export const fetchWithdrawals = (withdrawalItems) => async (dispatch) => {
+  console.log(withdrawalItems)
+  dispatch(actions.fetchWithdrawals({ withdrawalItems }));
+};
+
 export const staked = (selectedAddress) => async (dispatch) => {
   dispatch(actions.staked({ selectedAddress }));
 };

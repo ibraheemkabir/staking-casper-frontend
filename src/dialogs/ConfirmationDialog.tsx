@@ -5,6 +5,8 @@ import Loader from "./../assets/images/loaderIcon.svg";
 import Success from "./../assets/images/SuccessIcon.svg";
 import Failure from "./../assets/images/FailureIcon.svg";
 import LoaderGif from "./../assets/images/loading2.gif";
+import { crucibleApi } from "../client";
+import { useSelector } from "react-redux";
 
 const RPC_API = "http://44.208.234.65:7777/rpc";
 
@@ -15,12 +17,15 @@ const ConfirmationDialog = ({
     show,
     onHide,
     message,
-    transaction
+    transaction,
+    isSwap = false,
   }: any) => {
     const [processing, setProcessing] = useState(false)
     const [isSuccessful, setIsSuccessful] = useState(false)
     const [isDone, setIsDone] = useState(false)
     const [intervalId, setIntervalId] = useState(null as any)
+    const { connect: { config, selectedAccount, isWalletConnected, signedAddresses, } } = useSelector((state: any) => state.casper);
+    const { walletAddress } = useSelector((state: any) => state.casper.walletConnector);
 
     const checkTransaction = async () => {
         setProcessing(true)
@@ -43,7 +48,23 @@ const ConfirmationDialog = ({
             setProcessing(false)
             setIsDone(true)
             setIsSuccessful(true)
-
+            if (isSwap) {
+              const Api = new crucibleApi()
+              await Api.signInToServer(walletAddress)
+              const logTransaction = await Api.gatewayApi({
+                command: 'logEvmAndNonEvmTransaction', data: {
+                  receiveNetwork: '56',
+                  sendAmount: '1',
+                  sendAddress: `cspr:${selectedAccount?.address}`,
+                  sendNetwork: '109090',
+                  sendTimestamp: Date.now(),
+                  targetCurrency: `CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`,
+                  receiveCurrency: 'BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179',
+                  creator: `cspr:${selectedAccount?.address}`
+              }, params: [] });
+              console.log(logTransaction);
+            }
+           
            }
         }
     }

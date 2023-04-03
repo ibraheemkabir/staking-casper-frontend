@@ -42,12 +42,14 @@ export const CasperSwap = () => {
   const { isConnected, isConnecting, currentWalletNetwork, walletAddress, networkClient } =
     useSelector((state: any) => state.casper.walletConnector);
 
+  
+
   async function swapEvm():Promise<any>{
     const Api = new crucibleApi()
     await Api.signInToServer(walletAddress)
 		const res = await Api.gatewayApi({
             command: 'swapGetTransaction', data: {
-              amount: 1,
+              amount: amount,
               targetCurrency: `CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`,
               currency: 'BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179'
           },
@@ -60,6 +62,22 @@ export const CasperSwap = () => {
         dispatch,
         res.data.requests
       )
+      if (tx) {
+
+        const res = await Api.gatewayApi({
+          command: 'logEvmAndNonEvmTransaction', data: {
+            "id": tx.split("|")[0],
+            "sendNetwork": "BSC_TESTNET",
+            "sendAddress": "0x0Bdb79846e8331A19A65430363f240Ec8aCC2A52",
+            "receiveAddress": `${selectedAccount?.address}`,
+            "sendCurrency": "BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179",
+            "sendAmount": amount,
+            "receiveCurrency": `CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`,
+        },
+        params: [] });
+        console.log(res);
+        setShowConfirmation(true)
+      }
       console.log(tx);
     }
     console.log(res)
@@ -177,6 +195,72 @@ export const CasperSwap = () => {
 
   return (
     <>
+         <FCard className={"card-staking f-mb-2"}>
+        <FGrid>
+          <FTypo size={18} align={"center"} className={"f-mb--5 f-mt--7"}>
+            SWAP FROM BSC TO CASPER
+          </FTypo>
+          <FGridItem alignX={"center"} size={[8, 8, 12]} className="f-m-auto f-mb-1">
+            <FItem align={"center"}>
+              <FInputText
+                className={"f-mt-2"}
+                label={"AMOUNT TO SWAP"}
+                placeholder={"0"}
+                value={amount}
+                onChange={(e: any) => {
+                  e.preventDefault();
+                  const re = /^-?\d*\.?\d*$/;
+                  if (e.target.value === "" || re.test(e.target.value)) {
+                    setAmount(e.target.value);
+                  }
+                }}
+                postfix={
+                  <FTypo className={"f-pr-1"} color="#dab46e">
+                    TOKEN
+                  </FTypo>
+                }
+              />
+              <FInputText
+                className={"f-mt-2"}
+                label={"Target Network"}
+                disabled
+                value={'CASPER'}
+                onChange={(e: any) => {}}
+              />
+              <FInputText
+                className={"f-mt-2"}
+                label={"BASE_FRM"}
+                disabled
+                value={targetToken}
+                onChange={(e: any) => {}}
+              />
+              {
+                isConnected ?
+                 (
+                   <FButton 
+                     title={"SWAP"}
+                     className="w-100 f-mt-2"
+                     onClick={() => swapEvm()}
+                   />
+                 )
+                : (
+                  <div className="w-100 f-mt-2">
+                    <MetaMaskConnector.WalletConnector
+                      WalletConnectView={FButton}
+                      WalletConnectModal={ConnectWalletDialog}
+                      isAuthenticationNeeded={false}
+                      WalletConnectViewProps={{ className: "w-100" }}
+                    />
+                  </div>
+                )
+              }
+            </FItem>
+          </FGridItem>
+         
+        </FGrid>
+        <ConfirmationDialog amount={amount} onHide={() =>setShowConfirmation(false)} transaction={processMsg} message={'Transaction sent to network and is processing.'} show={showConfirmation} isSwap={true} />
+        <TxProcessingDialog onHide={() =>setLoading(false)} message={ processMsg || "Transaction Processing...."} show={loading}/>
+      </FCard>
       <FCard className={"card-staking f-mb-2"}>
         <FGrid alignX={"center"} className="f-mb-1">
           <FTypo size={18} align={"center"} className={"f-mb-14 f-mt--7"}>
@@ -257,72 +341,7 @@ export const CasperSwap = () => {
           </FGridItem>
         </FGrid>
       </FCard>
-      <FCard className={"card-staking f-mb-2"}>
-        <FGrid>
-          <FTypo size={18} align={"center"} className={"f-mb--5 f-mt--7"}>
-            SWAP FROM BSC TO CASPER
-          </FTypo>
-          <FGridItem alignX={"center"} size={[8, 8, 12]} className="f-m-auto f-mb-1">
-            <FItem align={"center"}>
-              <FInputText
-                className={"f-mt-2"}
-                label={"AMOUNT TO SWAP"}
-                placeholder={"0"}
-                value={amount}
-                onChange={(e: any) => {
-                  e.preventDefault();
-                  const re = /^-?\d*\.?\d*$/;
-                  if (e.target.value === "" || re.test(e.target.value)) {
-                    setAmount(e.target.value);
-                  }
-                }}
-                postfix={
-                  <FTypo className={"f-pr-1"} color="#dab46e">
-                    TOKEN
-                  </FTypo>
-                }
-              />
-              <FInputText
-                className={"f-mt-2"}
-                label={"Target Network"}
-                disabled
-                value={'CASPER'}
-                onChange={(e: any) => {}}
-              />
-              <FInputText
-                className={"f-mt-2"}
-                label={"BASE_FRM"}
-                disabled
-                value={targetToken}
-                onChange={(e: any) => {}}
-              />
-              {
-                isConnected ?
-                 (
-                   <FButton 
-                     title={"SWAP"}
-                     className="w-100 f-mt-2"
-                     onClick={() => swapEvm()}
-                   />
-                 )
-                : (
-                  <div className="w-100 f-mt-2">
-                    <MetaMaskConnector.WalletConnector
-                      WalletConnectView={FButton}
-                      WalletConnectModal={ConnectWalletDialog}
-                      isAuthenticationNeeded={false}
-                      WalletConnectViewProps={{ className: "w-100" }}
-                    />
-                  </div>
-                )
-              }
-            </FItem>
-          </FGridItem>
-         
-        </FGrid>
-        <ConfirmationDialog onHide={() =>setShowConfirmation(false)} transaction={processMsg} message={'Transaction sent to network and is processing.'} show={showConfirmation} isSwap={true} />
-        <TxProcessingDialog onHide={() =>setLoading(false)} message={ processMsg || "Transaction Processing...."} show={loading}/>
-      </FCard>
+   
     </>
   );
 };

@@ -18,6 +18,7 @@ const ConfirmationDialog = ({
     onHide,
     message,
     transaction,
+    amount,
     isSwap = false,
   }: any) => {
     const [processing, setProcessing] = useState(false)
@@ -54,11 +55,11 @@ const ConfirmationDialog = ({
               const logTransaction = await Api.gatewayApi({
                 command: 'logEvmAndNonEvmTransaction', data: {
                   receiveNetwork: '56',
-                  sendAmount: '1',
-                  sendAddress: `cspr:${selectedAccount?.address}`,
+                  sendAmount: amount,
+                  sendAddress: `${selectedAccount?.address}`,
                   sendNetwork: '109090',
                   sendTimestamp: Date.now(),
-                  targetCurrency: `CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`,
+                  sendCurrencyS: `CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`,
                   receiveCurrency: 'BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179',
                   creator: `cspr:${selectedAccount?.address}`
               }, params: [] });

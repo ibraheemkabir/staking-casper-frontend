@@ -130,7 +130,7 @@ export const CasperWithdrawal = () => {
 
           const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
             decodeBase16('c312f4eda82c253e2817f41586ce0af99294d652507c2c7827bb6abbdc0f6e0f'),
-            'swap',
+            'withdraw_signed',
             args
           );
 

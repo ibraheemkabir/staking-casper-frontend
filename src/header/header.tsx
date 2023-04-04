@@ -21,7 +21,7 @@ import {
 } from '../redux/casper/casperActions';
 import toast from "react-hot-toast";
 import AddressSelector from "../dialogs/AddressSelector";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import TxProcessingDialog from "../dialogs/TxProcessingDialog";
 
 const RPC_API = "http://44.208.234.65:7777/rpc";
@@ -32,8 +32,10 @@ const casperClient = new CasperClient(RPC_API);
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { stakingId }: any = useParams();
-  console.log(stakingId);
+  const par = useParams();
+  const { bridgePoolAddress }: any = useParams();
+  console.log(bridgePoolAddress, par, 'bridgePoolAddress');
+  const navigate = useHistory();
   const connection = useSelector((state: any) => state.casper.connect)
   const [loading, setLoading] = useState(false);
 
@@ -44,7 +46,7 @@ const Header = () => {
   const selectedAccount: { address?: string } = {};
 
   const connectWallet = async () => {
-    await window.casperlabsHelper.requestConnection()
+    await window.casperlabsHelper?.requestConnection()
 
     const isConnected = await window.casperlabsHelper.isConnected();
 
@@ -68,7 +70,7 @@ const Header = () => {
     if (isConnected) {
       try {
         const publicKey = await window.casperlabsHelper.getActivePublicKey();
-        console.log(publicKey, stakingId, 'stakingIdstakingId');
+        console.log(publicKey, bridgePoolAddress, 'stakingIdstakingId');
         //textAddress.textContent += publicKey;
 
         const latestBlock = await casperService.getLatestBlockInfo();
@@ -86,7 +88,7 @@ const Header = () => {
         console.log(balance.toString())
 
         const info = await casperService.getDeployInfo(
-          stakingId
+          bridgePoolAddress
         )
 
         // @ts-ignore
@@ -144,6 +146,9 @@ const Header = () => {
     <div>
       <FHeader showLogo={true} headerLogo={logo} className="bg-none">
         <FItem display={"flex"} align="right" alignY={"center"}>
+          <FItem display={"flex"} align="right" alignY={"center"}>
+            <span onClick={() => navigate.push(`/withdraw`)}>My Withdrawals</span>
+          </FItem>
           {connection?.isWalletConnected ? (
             <>
               <FButton

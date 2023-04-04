@@ -6,6 +6,7 @@ import { crucibleApi } from "../client";
 import { fetchWithdrawals } from "../redux/casper/casperActions";
 import { Networks } from "../utils/stringUtils";
 import { CasperWithdrawal } from "../pages/CasperWithdrawal";
+import FerrumJson from "../utils/contract.json";
 
 import './layout.scss';
 import { Web3Helper } from "../utils/web3Helper";
@@ -40,22 +41,32 @@ export const Withdrawals = () => {
 
     const dispatch = useDispatch();
 
-    async function withdrawEvm(id: string):Promise<any>{
+    async function withdrawEvm(id: string, item: any):Promise<any>{
+        console.log(item, 'itemitemitemitem')
         const Api = new crucibleApi()
         await Api.signInToServer(walletAddress)
             const res = await Api.gatewayApi({
-                command: 'swapGetTransaction', data: {
-                  id,
-                  amount: 1,
-                  targetCurrency: `CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`,
-                  currency: 'BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179'
+              "command": "updateEvmAndNonEvmTransaction",
+               "data": {
+                "id": id,
+                "txType": "swap",
+                "sendNetwork": "BSC_TESTNET",
+                "used": "",
+                "user": "0x0Bdb79846e8331A19A65430363f240Ec8aCC2A52",
+                "sendAddress": "0x0Bdb79846e8331A19A65430363f240Ec8aCC2A52",
+                "receiveAddress": "017fbbccf39a639a1a5f469e3fb210d9f355b532bd786f945409f0fc9a8c6313b1",
+                "sendCurrency": "BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179",
+                "sendAmount": item.sendAmount,
+                "receiveCurrency": "CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473"
               },
-                params: [] });
-        if (res.data.requests) {
+              "params": []
+            });
+        if (res.data) {
           const helper = new Web3Helper(networkClient)
+          console.log(res.data, 'res.datares.data');
           const tx = await helper.sendTransactionAsync(
             dispatch,
-            res.data.requests
+            [res.data]
           )
           if(tx) {
             setShowConfirmation(true)
@@ -177,7 +188,7 @@ export const Withdrawals = () => {
             {
                 isConnected
                 ? (<FButton title={"Withdraw"} onClick={() => 
-                    item.receiveCurrency.split(":")[0] === 'CSPR' ? performCasperWithdraw(item.sendAmount) : withdrawEvm(item.id)
+                  item.receiveCurrency.split(":")[0] === 'CSPR' ? performCasperWithdraw(item.sendAmount) : withdrawEvm(item.id, item)
                 } />)
                 : (
                     <MetaMaskConnector.WalletConnector

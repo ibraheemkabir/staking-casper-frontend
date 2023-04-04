@@ -61,7 +61,8 @@ const ConfirmationDialog = ({
                   sendTimestamp: Date.now(),
                   sendCurrencyS: `CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`,
                   receiveCurrency: 'BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179',
-                  creator: `cspr:${selectedAccount?.address}`
+                  creator: `cspr:${selectedAccount?.address}`,
+                  id: transaction
               }, params: [] });
               console.log(logTransaction);
             }

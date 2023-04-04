@@ -165,9 +165,23 @@ export const CasperSwap = () => {
             if (signedDeploy.ok) {
               const res = await casperClient.putDeploy(signedDeploy.val);
               console.log(res, 'resres');
-              if (res) {
-               
-              }
+              // if (res) {
+              //   const Api = new crucibleApi();
+              //   await Api.signInToServer(walletAddress);
+              //   const result = await Api.gatewayApi({
+              //     command: 'processFromEvmSwapTransaction', data: {
+              //       "id": `0x${res}`,
+              //       "txType": "swap",
+              //       "sendNetwork": "BSC_TESTNET",
+              //       "used": "",
+              //       "sendAddress": "0x0Bdb79846e8331A19A65430363f240Ec8aCC2A52",
+              //       "receiveAddress": `${selectedAccount?.address}`,
+              //       "sendCurrency": "BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179",
+              //       "sendAmount": amount,
+              //       "receiveCurrency": `CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`,
+              //   }})
+              //   console.log(result);
+              // }
               setProcessMsg(res)
               setLoading(false)
               setShowConfirmation(true)

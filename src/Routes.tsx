@@ -11,16 +11,16 @@ const BaseRoutes = () => {
       <Header />
       <FMain>
         <Switch>
-          <Route path="/swap/:bridgePoolAddress" component={() =>
-            <FGrid spacing={13}>
-             <CasperSwap /> 
-            </FGrid>
-          }></Route>
-          <Route path="/withdraw/:bridgePoolAddress" component={() => (
+          <Route path="/withdraw" component={() => (
             <FGrid spacing={13}>
               <Withdrawals /> 
             </FGrid>
           )}></Route>
+          <Route path="*" component={() =>
+            <FGrid spacing={13}>
+             <CasperSwap /> 
+            </FGrid>
+          }></Route>
         </Switch>
       </FMain>
     </>

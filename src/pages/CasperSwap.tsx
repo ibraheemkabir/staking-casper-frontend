@@ -21,7 +21,7 @@ import { ConnectWalletDialog } from "../utils/connect-wallet/ConnectWalletDialog
 import { crucibleApi } from "../client";
 import { Web3Helper } from "../utils/web3Helper";
 
-const RPC_API = "http://44.208.234.65:7777/rpc";
+const RPC_API = "https://rpc.testnet.casperlabs.io/rpc";
 
 const casperService = new CasperServiceByJsonRPC(RPC_API);
 const casperClient = new CasperClient(RPC_API);

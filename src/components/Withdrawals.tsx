@@ -26,7 +26,7 @@ import ConfirmationDialog from "../dialogs/ConfirmationDialog";
 import TxProcessingDialog from "../dialogs/TxProcessingDialog";
 
 
-const RPC_API = "http://44.208.234.65:7777/rpc";
+const RPC_API = "https://rpc.testnet.casperlabs.io/rpc";
 
 const casperService = new CasperServiceByJsonRPC(RPC_API);
 const casperClient = new CasperClient(RPC_API);

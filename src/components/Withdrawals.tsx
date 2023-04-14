@@ -24,6 +24,7 @@ import { CasperServiceByJsonRPC, CLPublicKey, CLValue,
 import { useHistory } from "react-router";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog";
 import TxProcessingDialog from "../dialogs/TxProcessingDialog";
+import Web3 from "web3";
 
 
 const RPC_API = "https://rpc.testnet.casperlabs.io/rpc";
@@ -56,7 +57,7 @@ export const Withdrawals = () => {
                 "sendAddress": "0x0Bdb79846e8331A19A65430363f240Ec8aCC2A52",
                 "receiveAddress": "017fbbccf39a639a1a5f469e3fb210d9f355b532bd786f945409f0fc9a8c6313b1",
                 "sendCurrency": "BSC_TESTNET:0xfe00ee6f00dd7ed533157f6250656b4e007e7179",
-                "sendAmount": item.sendAmount,
+                "sendAmount":  Web3.utils.toWei(item.sendAmount, 'ether'),
                 "receiveCurrency": "CSPR:222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473"
               },
               "params": []

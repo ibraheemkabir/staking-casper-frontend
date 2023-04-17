@@ -1,4 +1,9 @@
 # Ferrum Network Staking Casper Network Frontend
+After you have forked and cloned the Ferrum Gateway monorepo](https://github.com/ferrumnet/ferrum-gateway) on your machine navigate to the ferrum-gateway directory and set upstream link, then starting installing dependecies and building in the following order.
+
+```
+cd ferrum-gateway
+```
 
 **Installation Requirements**
 
@@ -49,18 +54,25 @@ const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
 
 # Instructions to Run
 
-
 Install required browser/chrome extensions (compatible with chrome , consider equivaluents on other browsers) :
 
 **Capser browser client extension**: `https://chrome.google.com/webstore/detail/casper-signer/djhndpllfiibmcdbnmaaahkhchcoijce?hl=en-GB`
 
 **Metamask browser extension**: `https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en-GB`
 
+**To Run Via npm**
+
 Clone casper bridge frontend repository
 
 Install project dependencies by running `npm install`
 
 Start project by running `npm start`
+
+**To Run Via Docker**
+
+docker build .
+
+docker-compose up --build casper-bridge-frontend
 
 <br />
 

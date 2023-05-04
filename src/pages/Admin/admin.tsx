@@ -18,7 +18,7 @@ const AdminDashboard = () => {
       <FContainer>
         <Header />
         <InputForm />
-        <Table list={[]} />
+        {/* //<Table list={[]} /> */}
       </FContainer>
     </div>
   );

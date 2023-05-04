@@ -73,10 +73,11 @@ const StakeCardSubmit = () => {
 
           const args = RuntimeArgs.fromMap({
             "amount": CLValueBuilder.u256(amount),
+            'staking_contract_package_hash': CLValueBuilder.string(`contract-package-wasm04ba6da177caf385161a97975c97519da55a9a25c37a220aa1173a5925d8ab5b`)
           });
 
           const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
-            decodeBase16('bece653339b33f9b7d6ada25f5ef38ed27ac8aeb9d21a8246233b7fdf3e9c559'),
+            decodeBase16('d6428a288740e81ab6f30e792b958ae8b755dc369747f120f669656219f81994'),
             'stake',
             args
           );

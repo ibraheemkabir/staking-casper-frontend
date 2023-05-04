@@ -3,11 +3,12 @@ import { FGrid, FCard, FGridItem, FContainer, FInputText, FButton, FDatepicker }
 import { useForm } from "react-hook-form";
 import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { CLPublicKey, CasperClient, CLValueBuilder, DeployUtil, RuntimeArgs, Signer, CasperServiceByJsonRPC } from "casper-js-sdk";
+import { CLPublicKey, CasperClient, CLValueBuilder, CLOptionType, DeployUtil, RuntimeArgs, Signer, CasperServiceByJsonRPC, CLAccountHashType, CLValueParsers, CLAccountHash, CLKey, CLTypeBuilder, CLByteArray } from "casper-js-sdk";
 import TxProcessingDialog from "../../dialogs/TxProcessingDialog";
 import ConfirmationDialog from "../../dialogs/ConfirmationDialog";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { setContractHash } from "../../utils/stringParser";
 
 const RPC_API = "http://44.208.234.65:7777/rpc";
 const casperClient = new CasperClient(RPC_API);
@@ -75,6 +76,10 @@ export const InputForm = () => {
       resolvedContractHash = contractHash.ContractPackage?.versions[0].contractHash || ''
      }
 
+
+      // const hashHex = Buffer.from("e222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473");
+      // const byteArr = new CLByteArray(new Uint8Array(hashHex));
+      // const myKey = new CLKey(byteArr);
       const args = RuntimeArgs.fromMap({
         "name": CLValueBuilder.string(values.stakingPoolName),
         "address": CLValueBuilder.string(values.tokenAddress),
@@ -83,7 +88,7 @@ export const InputForm = () => {
         "withdraw_starts": CLValueBuilder.u64(toTimestamp(values.withdrawStarts)),
         "withdraw_ends": CLValueBuilder.u64(toTimestamp(values.withdrawEnds)),
         "staking_total": CLValueBuilder.u256(values.stakingCap),
-        "erc20_contract_hash": CLValueBuilder.string(resolvedContractHash?.toString())
+        "erc20_contract_package_hash": setContractHash(`hash-e222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`)
       });
 
       const res = await axios.get('http://localhost:3000/',

@@ -61,6 +61,10 @@ const StakeCardSubmit = () => {
       console.log('hellooooo');
       setLoading(true)
       try {
+        //@ts-ignore
+        const casperWalletProvider = await window.CasperWalletProvider;    
+        const provider = casperWalletProvider();
+        console.log(provider, 'provider')
         // console.log(selectedAccount?.address, Number(amount));
         if (amount && Number(amount) > 0) {
           const publicKeyHex = selectedAccount?.address;
@@ -87,12 +91,20 @@ const StakeCardSubmit = () => {
           const deploy = DeployUtil.makeDeploy(deployParams, session, payment);
 
           const deployJson: any = DeployUtil.deployToJson(deploy);
+          console.log(deployJson, 'deployJsondeployJsondeployJson')
         
-          Signer.sign(deployJson, publicKeyHex).then(async (signedDeployJson) => {
-            const signedDeploy = DeployUtil.deployFromJson(signedDeployJson);
-            console.log(signedDeploy)
-            if (signedDeploy.ok) {
-              const res = await casperClient.putDeploy(signedDeploy.val);
+          provider.sign(JSON.stringify(deployJson), publicKeyHex).then(async (signedDeployJson: any) => {
+            console.log(signedDeployJson);
+            const signedDeploy = DeployUtil.setSignature(
+              deploy,
+              signedDeployJson.signature,
+              CLPublicKey.fromHex(publicKeyHex)
+            );
+            console.log(signedDeploy, 'signedDeploysignedDeploy')
+            // @ts-ignore
+            if (!signedDeploy.cancelled) {
+              // @ts-ignore
+              const res = await casperClient.putDeploy(signedDeploy);
               console.log(res, 'resres');
               setProcessMsg(res)
               setLoading(false)

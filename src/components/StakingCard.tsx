@@ -47,9 +47,11 @@ const StakingCard = () => {
   const { connect: { config, selectedAccount, signedAddresses } } = useSelector((state: any) => state.casper);
 
   const connectWallet = async () => {
-    await window.casperlabsHelper.requestConnection()
+    //@ts-ignore
+    const casperWalletProvider = await window.CasperWalletProvider;    
+    const provider = casperWalletProvider();
+    const isConnected = await provider.isConnected();
 
-    const isConnected = await window.casperlabsHelper.isConnected();
 
     if (isConnected) {
       await AccountInformation();
@@ -76,7 +78,7 @@ const StakingCard = () => {
 
           const args = RuntimeArgs.fromMap({
             "amount": CLValueBuilder.u256(amount),
-            'staking_contract_package_hash': CLValueBuilder.string(`63752072046fa449810f4151d8998a305f6949321225a01ff0b576968643f1e4`)
+            'staking_contract_package_hash': CLValueBuilder.string(`contract-package-wasm04ba6da177caf385161a97975c97519da55a9a25c37a220aa1173a5925d8ab5b`)
           });
 
           const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
@@ -124,10 +126,13 @@ const StakingCard = () => {
 
 
   async function AccountInformation() {
-    const isConnected = await window.casperlabsHelper.isConnected();
-    console.log(isConnected, connection, 'isConnectedisConnected')
+    //@ts-ignore
+    const casperWalletProvider = await window.CasperWalletProvider;    
+    const provider = casperWalletProvider();
+    const isConnected = await provider.isConnected();
+    
     if (isConnected) {
-        const publicKey = await window.casperlabsHelper.getActivePublicKey();
+        const publicKey = await provider.getActivePublicKey();
         console.log(publicKey);
         //textAddress.textContent += publicKey;
 

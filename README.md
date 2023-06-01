@@ -29,13 +29,13 @@ As a result of Cors errors from the casper RPC url, it is important to download 
 
 Token address field - This can be any erc-20 token to be utilised for the staking pool, for testing purposes you can utilise e222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473 (FERRUM_ERC20_BASE	- a test erc20 token)
 
-![Alt text](Screenshot%202023-05-31%20at%2020.09.06.png)
+![Alt text](src/assets/images/Screenshot%202023-06-01%20at%2006.56.24.png)
 
 - click on deploy and approve wallet transaction.
 
 - after successful execution of transaction, on deploying staking pool, the deployed staking pool deploy hash is displayed on modal.
 
-![Alt text](../../Desktop/Screenshot%202023-05-31%20at%2020.14.21.png)
+![Alt text](src/assets/images/Screenshot%202023-05-31%20at%2020.14.21.png)
 
 copy deploy hash and go to url http://localhost:3000/${deployhash} e.g http://localhost:3000/b64e05e8003fc268567e8641fe491d0054a2b4b03a0d032622c83a32c2238678
 
@@ -43,9 +43,6 @@ copy deploy hash and go to url http://localhost:3000/${deployhash} e.g http://lo
 **To Stake**
 
 When staking period kicks in, user can click on stake now to stake tokens.
-
-![Alt text](../../../../var/folders/qj/fdt4xm_d027_cm1jwt9hbw9h0000gn/T/TemporaryItems/NSIRD_screencaptureui_Y6LWLB/Screenshot%202023-06-01%20at%2001.23.45.png)
-
 
 **To Add rewards to a staking pool**
 

@@ -18,17 +18,18 @@ From terminal :-
 
 - from browser open url http://localhost:3000/admin
 
-As a result of Cors errors from the casper RPC url, it is important to download a cors unblocking extension to ease connection e.g https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en-GB
+As a result of Cors errors from the casper RPC url, it is important to download a cors unblocking extension to ease connection e.g https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en-GB or its equivalent on respective browsers
 
 - To deploy casper staking pool, from localhost:3000/admin, connect casper wallet and enter required deployment fields.
-
 
 - connect casper wallet to site.
 
 - Enter all required details to deploy a new staking contract :
 
-Token address field - This can be any erc-20 token to be utilised for the staking pool, for testing purposes you can utilise e222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473 (FERRUM_ERC20_BASE	- a test erc20 token)
+Token address field - This can be any erc-20 token to be utilised for the staking pool, for testing purposes you can utilise e222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473  on casper testnet ( FERRUM_ERC20_BASE- a test erc20 token)
 
+NB: To deploy other erc20 tokens for staking, tokens will need to be mapped to contract package hash in file directory (https://github.com/ferrumnet/staking-casper-frontend/src/utils/stringUtils.ts)
+ 
 ![Alt text](src/assets/images/Screenshot%202023-06-01%20at%2006.56.24.png)
 
 - click on deploy and approve wallet transaction.
@@ -42,7 +43,17 @@ copy deploy hash and go to url http://localhost:3000/${deployhash} e.g http://lo
 
 **To Stake**
 
-When staking period kicks in, user can click on stake now to stake tokens.
+When staking period kicks in, userS can click on stake now to stake tokens.
+
+If user is interecting with the wallet for the first time, users will need to apporove the wallet address to be used by clicking on approve wallet beneath the stake now button.
+
+After approving, users can then stake as required.
+
+
+**To Withdraw after maturity**
+
+When withdraw period kicks in, users can click on withdraw now to withdraw tokens.
+
 
 **To Add rewards to a staking pool**
 

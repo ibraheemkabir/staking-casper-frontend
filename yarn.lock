@@ -13840,7 +13840,7 @@
   "resolved" "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
-"typedjson@^1.6.0-rc2":
+"typedjson@^1.6.0-rc2", "typedjson@^1.8.0":
   "integrity" "sha512-taVJVGebQDagEmVc3Cu6vVVLkWLnxqPcTrkVgbpAsI02ZDDrnHy5zvt1JVqXv4/yztBgZAX1oR07+bkiusGJLQ=="
   "resolved" "https://registry.yarnpkg.com/typedjson/-/typedjson-1.8.0.tgz"
   "version" "1.8.0"

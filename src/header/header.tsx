@@ -12,7 +12,7 @@ import { ReactComponent as IconNetwork } from "../assets/images/casper.svg";
 
 import logo from "../assets/images/logo-light.svg";
 import { CgArrowsExchangeAlt } from "react-icons/cg";
-import { CasperClient, CasperServiceByJsonRPC, CLPublicKey } from "casper-js-sdk";
+import { CasperClient, CasperServiceByJsonRPC, CLPublicKey, Contracts, DeployUtil } from "casper-js-sdk";
 import { 
   connectWallet as connectWalletDispatch,
   resetWallet,
@@ -23,12 +23,19 @@ import toast from "react-hot-toast";
 import AddressSelector from "../dialogs/AddressSelector";
 import { useParams } from "react-router";
 import TxProcessingDialog from "../dialogs/TxProcessingDialog";
+//@ts-ignore
+import { TypedJSON } from "typedjson";
+import { RuntimeArgs } from "casper-js-sdk";
+import { CLValueBuilder } from "casper-js-sdk";
+import { convertHashStrToHashBuff, getTokenHash, setContractHash } from "../utils/stringParser";
 
 const RPC_API = "http://44.208.234.65:7777/rpc";
 const STATUS_API = "http://159.65.203.12:8888";
 
 const casperService = new CasperServiceByJsonRPC(RPC_API);
 const casperClient = new CasperClient(RPC_API);
+
+const contract = new Contracts.Contract(casperClient);
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -83,10 +90,7 @@ const Header = () => {
         //textAddress.textContent += publicKey;
 
         const latestBlock = await casperService.getLatestBlockInfo();
-        console.log(latestBlock);
-
         const root = await casperService.getStateRootHash(latestBlock?.block?.hash);
-        console.log(latestBlock, root)
 
         await connectWalletDispatch([ { "address": publicKey } ])(dispatch)
 
@@ -94,12 +98,25 @@ const Header = () => {
         
         // @ts-ignore
         const balance = await casperService.getAccountBalance(latestBlock?.block?.header?.state_root_hash, balanceUref);
-        console.log(balance.toString())
 
+        // const args = RuntimeArgs.fromMap({});
+        // await contract.setContractHash('hash-56c7117eaea62cb89e94479f45a12c4e8bd9cfc0f427dd0ff3e221a546deff63')
+        // const payment = DeployUtil.standardPayment(50000000000);
+        // const qu = await contract.queryContractDictionary('staking_ends', 'uref-2bfbe059dc2e7dab956c82404e2dc5a8ea6d6ce3cc15287aaaad7727a3a109ad-007')
+        // console.log(qu);
+        // @ts-ignore
+        // const balances = await casperService.getBlockState(
+        //   //@ts-ignore
+        //   latestBlock?.block?.header?.state_root_hash,
+        //   "hash-e222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473",
+        //   ["contract_hash"]
+        // );
+        // console.log(balances.toString())
+
+        
         const info = await casperService.getDeployInfo(
           stakingId
         )
-        console.log(info, 'infoinfo');
 
         // @ts-ignore
         const infoArguments = (info.deploy.session.ModuleBytes.args || []).find(
@@ -107,10 +124,8 @@ const Header = () => {
         )
 
         if (infoArguments) {
-          console.log(infoArguments, 'infoArguments', infoArguments[1].parsed)
-         // const token = infoArguments[1].parsed.Hash.split('-')[1]
-         //  console.log(token, latestBlock?.block?.header?.state_root_hash, 'latestBlock?.block?.header?.state_root_hash,latestBlock?.block?.header?.state_root_hash,');
-          const token = 'ba950993182bbc4a73fbcc0183c43534bdf7fa9a862db5a847cc7d726e274d9e';
+          const token_contract = infoArguments[1].parsed.Hash.split('-')[1]
+          const token = getTokenHash(token_contract);
           const tokenName = await casperService.getBlockState(
             //@ts-ignore
             latestBlock?.block?.header?.state_root_hash,
@@ -125,16 +140,23 @@ const Header = () => {
              ['symbol']
           )
   
-          console.log(tokenName.CLValue?.data, tokenSymbol.CLValue?.data, 'info2info2')
+          console.log( 'info2info2', info)
 
           if(info.deploy.session) {
-            // @ts-ignore
+            //@ts-ignore
+            const transforms = info.execution_results[0].result.Success?.effect.transforms;
+            const contract_package_hash = transforms.find((e: any) => e.transform.AddKeys && e.transform.AddKeys[0].name === 'contract_package_hash')
+            const stacking_contract_package_hash =  transforms.find((e: any) => e.transform.AddKeys && e.transform.AddKeys[0].name === 'staking_contract_hash');
+
             configLoaded({
               // @ts-ignore
               config: info.deploy.session.ModuleBytes.args,
               tokenInfo: {
                 tokenSymbol: tokenSymbol.CLValue?.data,
-                tokenName: tokenName.CLValue?.data
+                tokenName: tokenName.CLValue?.data,
+                stacking_contract_package_hash: stacking_contract_package_hash && stacking_contract_package_hash?.transform.AddKeys[0].key.split('hash-')[1],
+                contract_package_hash: contract_package_hash && contract_package_hash?.transform.AddKeys[0].key.split('hash-')[1],
+                // @ts-ignore
               }
             })(dispatch);
             //@ts-ignore

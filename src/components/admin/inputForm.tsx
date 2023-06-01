@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { setContractHash } from "../../utils/stringParser";
 
-const RPC_API = "http://44.208.234.65:7777/rpc";
+const RPC_API = "https://rpc.testnet.casperlabs.io/rpc";
 const casperClient = new CasperClient(RPC_API);
 const casperService = new CasperServiceByJsonRPC(RPC_API);
 
@@ -94,7 +94,7 @@ export const InputForm = () => {
         "erc20_contract_package_hash": setContractHash(`hash-e222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473`)
       });
 
-      const res = await axios.get('http://localhost:3000/',
+      const res = await axios.get('https://casper-staking-backend.dev.svcs.ferrumnetwork.io',
         {
           responseType: 'arraybuffer'
         }
@@ -122,7 +122,7 @@ export const InputForm = () => {
             signedDeployJson.signature,
             CLPublicKey.fromHex(publicKeyHex)
           );
-          console.log(signedDeploy, 'signedDeploysignedDeploy')
+
           // @ts-ignore
           if (!signedDeploy.cancelled) {
             const res = await casperClient.putDeploy(signedDeploy);
@@ -276,7 +276,7 @@ export const InputForm = () => {
                 <FButton
                   type="submit"
                   disabled={!connection.connectedAccounts.length}
-                  title={!!connection.connectedAccounts.length ? "Create Staking" : 'Connect wallet to create' }
+                  title={!!connection.connectedAccounts.length ? "Deploy Staking pool" : 'Connect wallet to create' }
                   className={"f-mt-1 f-mb-2"}
                   // postfix={isSubmitting && <ClipLoader color="#fff" size={20} />}
                 ></FButton>

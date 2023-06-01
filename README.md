@@ -18,16 +18,33 @@ From terminal :-
 
 - from browser open url http://localhost:3000/admin
 
+As a result of Cors errors from the casper RPC url, it is important to download a cors unblocking extension to ease connection e.g https://chrome.google.com/webstore/detail/cors-unblock/lfhmikememgdcahcdlaciloancbhjino?hl=en-GB
 
-**NB: token and reward token params in above url can changed to desired staking token address as required**
+- To deploy casper staking pool, from localhost:3000/admin, connect casper wallet and enter required deployment fields.
 
-- connect casper client to site.
 
-- Enter all required details to deploy a new staking contract.
+- connect casper wallet to site.
+
+- Enter all required details to deploy a new staking contract :
+
+Token address field - This can be any erc-20 token to be utilised for the staking pool, for testing purposes you can utilise e222974816f70ca96fc4002a696bb552e2959d3463158cd82a7bfc8a94c03473 (FERRUM_ERC20_BASE	- a test erc20 token)
+
+![Alt text](Screenshot%202023-05-31%20at%2020.09.06.png)
 
 - click on deploy and approve wallet transaction.
 
-- after successful execution of transaction, deployment address is displayed on an alert box on admin dashboard.
+- after successful execution of transaction, on deploying staking pool, the deployed staking pool deploy hash is displayed on modal.
+
+![Alt text](../../Desktop/Screenshot%202023-05-31%20at%2020.14.21.png)
+
+copy deploy hash and go to url http://localhost:3000/${deployhash} e.g http://localhost:3000/b64e05e8003fc268567e8641fe491d0054a2b4b03a0d032622c83a32c2238678
+
+
+**To Stake**
+
+When staking period kicks in, user can click on stake now to stake tokens.
+
+![Alt text](../../../../var/folders/qj/fdt4xm_d027_cm1jwt9hbw9h0000gn/T/TemporaryItems/NSIRD_screencaptureui_Y6LWLB/Screenshot%202023-06-01%20at%2001.23.45.png)
 
 
 **To Add rewards to a staking pool**
@@ -48,15 +65,13 @@ casper-client put-deploy \
 
 - The parameters required for this are detailed in the command above where the session hash refers to the deployed staking contract hash reward is being added to.
 
-### Frontend :
+### To Carry out token staking activities (stake, earlywithdraw, withdraw) :
 
-From terminal: -
+- from browser, naviagte to `localhost:{port}/{staking_contract_deploy_hash}` (where port is the port opened by above command and staking contract deploy hash is shown above).
 
-- Run `yarn/npm install`
+- connect casper wallet to site.
 
-- Run `yarn/npm start`
-
-- from browser, naviagte to `localhost:{port}/{staking_contract_deploy_hash}` (where port is the port opened by above command).
+- If the wallet is interacting with the staking contract for the first time, approval is required.
 
 - At this point, users are able to interact with the contract based on the current cycle the contract is.
 

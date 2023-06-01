@@ -83,6 +83,7 @@ casper-client put-deploy \
 
 - At this point, users are able to interact with the contract based on the current cycle the contract is.
 
+Live url for testing  - https://casper-staking.ferrumnetwork.io/b64e05e8003fc268567e8641fe491d0054a2b4b03a0d032622c83a32c2238678
 <br />
  
 # Architecture details

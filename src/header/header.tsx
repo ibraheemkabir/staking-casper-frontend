@@ -24,12 +24,9 @@ import AddressSelector from "../dialogs/AddressSelector";
 import { useParams } from "react-router";
 import TxProcessingDialog from "../dialogs/TxProcessingDialog";
 //@ts-ignore
-import { TypedJSON } from "typedjson";
-import { RuntimeArgs } from "casper-js-sdk";
-import { CLValueBuilder } from "casper-js-sdk";
 import { convertHashStrToHashBuff, getTokenHash, setContractHash } from "../utils/stringParser";
 
-const RPC_API = "http://44.208.234.65:7777/rpc";
+const RPC_API = "https://rpc.testnet.casperlabs.io/rpc";
 const STATUS_API = "http://159.65.203.12:8888";
 
 const casperService = new CasperServiceByJsonRPC(RPC_API);
